@@ -28,3 +28,17 @@ INSERT INTO Products (Name, Colour) VALUES ('Sprocket', 'Yellow')
 INSERT INTO Stock SELECT TOP 1 p.Id, 100 FROM Products p WHERE p.Name = 'Widget'
 INSERT INTO Stock SELECT TOP 1 p.Id, 200 FROM Products p WHERE p.Name = 'Sprocket'
 GO
+
+CREATE PROCEDURE Report
+AS
+BEGIN
+    SELECT
+        p.Name,
+        p.Colour,
+        s.Count
+    FROM
+        Products p
+    JOIN Stock s ON p.Id = s.ProductId
+    ORDER BY
+        p.Name ASC
+END

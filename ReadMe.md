@@ -1,8 +1,6 @@
 # Db in a container
 
-## Getting started
-
-### Installing sqlcmd
+## Installing sqlcmd
 
 `$ curl https://packages.microsoft.com/keys/microsoft.asc | sudo apt-key add -`
 
@@ -14,7 +12,7 @@
 
 `sqlcmd` will be installed to `/opt/msql-tools/bin/sqlcmd`, you may want to add that to the path
 
-### Create test database
+## Create database
 
 Start container with
 
@@ -26,7 +24,7 @@ Run the script to create an initial db
 
 Check it completed correctly
 
-`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -d TestDb -Q 'SELECT s.Count, p.Name, p.Colour FROM Products p JOIN Stock s ON p.Id = s.ProductId'`
+`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -d TestDb -Q 'EXEC Report'`
 
 To make sure that persistance is working restart the stack
 
@@ -34,10 +32,16 @@ To make sure that persistance is working restart the stack
 
 `$ docker-compose up -d`
 
-`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -d TestDb -Q 'SELECT s.Count, p.Name, p.Colour FROM Products p JOIN Stock s ON p.Id = s.ProductId'`
+`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -d TestDb -Q 'EXEC Report'`
+
+## Secure Container
+
+Run in the secure script, this will change the password for the SA users and create two database users; a service user which can interact with the data and a update user which is used to manage the schema.
+
+`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -i Scripts/Secure.sql`
 
 ## Todo
-* Change the password (how to make this persist?)
 * TLS
-* logon for db
 * Patching schema
+* Encryption
+* Audit

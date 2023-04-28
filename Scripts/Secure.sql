@@ -1,0 +1,18 @@
+USE master
+
+ALTER LOGIN SA WITH PASSWORD='Password1!'
+GO
+
+USE TestDB
+
+CREATE LOGIN ServiceUser WITH PASSWORD='Password2!', DEFAULT_DATABASE = TestDb
+CREATE USER ServiceUser
+ALTER ROLE db_datareader ADD MEMBER ServiceUser
+ALTER ROLE db_datawriter ADD MEMBER ServiceUser
+GRANT EXECUTE TO ServiceUser
+GO
+
+CREATE LOGIN UpdateUser WITH PASSWORD='Password3!', DEFAULT_DATABASE = TestDb
+CREATE USER UpdateUser
+ALTER ROLE db_ddladmin ADD MEMBER UpdateUser
+GO
