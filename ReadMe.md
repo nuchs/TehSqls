@@ -24,7 +24,7 @@ Run the script to create an initial db
 
 Check it completed correctly
 
-`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -d TestDb -Q 'EXEC Report'`
+`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -Q 'select name from sys.databases'`
 
 To make sure that persistance is working restart the stack
 
@@ -32,7 +32,7 @@ To make sure that persistance is working restart the stack
 
 `$ docker-compose up -d`
 
-`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -d TestDb -Q 'EXEC Report'`
+`$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -Q 'select name from sys.databases'`
 
 ## Secure Container
 
@@ -40,8 +40,26 @@ Run in the secure script, this will change the password for the SA users and cre
 
 `$ sqlcmd -S localhost,1433 -U SA -P "A_Bad_Password" -i Scripts/Secure.sql`
 
+## Use it
+
+Use the update user to create the database schema
+
+`$ sqlcmd -S localhost,1433 -U UpdateUser -P 'Password3!' -i 'Scripts/Patch0.sql'`
+
+Use the service user to populate the database
+
+`$ sqlcmd -S localhost,1433 -U ServiceUser -P 'Password2!' -i 'Scripts/TestData.sql'`
+
+Update the db schema
+
+`$ sqlcmd -S localhost,1433 -U UpdateUser -P 'Password3!' -i 'Scripts/Patch1.sql'`
+
+Use feature from latest patch
+
+`$ sqlcmd -S localhost,1433 -U ServiceUser -P 'Password2!' -Q 'EXEC Report'`
+
 ## Todo
 * TLS
-* Patching schema
 * Encryption
 * Audit
+* limit who can logon to container
