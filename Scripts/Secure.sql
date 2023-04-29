@@ -22,3 +22,14 @@ CREATE LOGIN UpdateUser WITH PASSWORD='Password3!', DEFAULT_DATABASE = TestDb
 CREATE USER UpdateUser
 ALTER ROLE db_ddladmin ADD MEMBER UpdateUser
 GO
+
+CREATE LOGIN SupportRO WITH PASSWORD='Password4!'
+CREATE USER SupportRO
+ALTER ROLE db_datareader ADD MEMBER SupportRO
+GO
+
+CREATE LOGIN SupportRW WITH PASSWORD='Password5!'
+CREATE USER SupportRW
+ALTER ROLE db_datareader ADD MEMBER SupportRW
+ALTER ROLE db_datawriter ADD MEMBER SupportRW
+GO

@@ -62,6 +62,4 @@ Use feature from latest patch
 * TLS
 * Encryption
 * Audit
-* limit who can logon to container
-* Schema for service user
-* support read and write users
+* limit who can logon to container or run as non root
