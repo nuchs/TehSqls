@@ -1,7 +1,7 @@
 USE TestDB
 GO
 
-CREATE TABLE Products(
+CREATE TABLE test.Products(
     Id INT IDENTITY(1, 1) NOT NULL,
     Name NVARCHAR(16) NOT NULL,
     Colour NVARCHAR(16),
@@ -10,10 +10,10 @@ CREATE TABLE Products(
 )
 GO
 
-CREATE TABLE Stock(
+CREATE TABLE test.Stock(
     ProductId INT NOT NULL,
     Count INT NOT NULL CONSTRAINT DF_Stock_Count DEFAULT 0,
 
-    CONSTRAINT FK_Stock_ProductId FOREIGN KEY (ProductId) REFERENCES Products(Id) ON DELETE CASCADE
+    CONSTRAINT FK_Stock_ProductId FOREIGN KEY (ProductId) REFERENCES test.Products(Id) ON DELETE CASCADE
 )
 GO

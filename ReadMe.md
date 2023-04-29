@@ -63,3 +63,5 @@ Use feature from latest patch
 * Encryption
 * Audit
 * limit who can logon to container
+* Schema for service user
+* support read and write users
