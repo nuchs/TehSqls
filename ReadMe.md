@@ -44,22 +44,22 @@ Run in the secure script, this will change the password for the SA users and cre
 
 Use the update user to create the database schema
 
-`$ sqlcmd -S localhost,1433 -U UpdateUser -P 'Password3!' -i 'Scripts/Patch0.sql'`
+`$ sqlcmd -S localhost,1433 -U UpdateUser -P 'Update_Password' -i 'Scripts/Patch0.sql'`
 
 Use the service user to populate the database
 
-`$ sqlcmd -S localhost,1433 -U ServiceUser -P 'Password2!' -i 'Scripts/TestData.sql'`
+`$ sqlcmd -S localhost,1433 -U ServiceUser -P 'Service_Password' -i 'Scripts/TestData.sql'`
 
 Update the db schema
 
-`$ sqlcmd -S localhost,1433 -U UpdateUser -P 'Password3!' -i 'Scripts/Patch1.sql'`
+`$ sqlcmd -S localhost,1433 -U UpdateUser -P 'Update_Password' -i 'Scripts/Patch1.sql'`
 
 Use feature from latest patch
 
-`$ sqlcmd -S localhost,1433 -U ServiceUser -P 'Password2!' -Q 'EXEC Report'`
+`$ sqlcmd -S localhost,1433 -U ServiceUser -P 'Service_Password' -Q 'EXEC Report'`
 
 ## Todo
 * TLS
-* Encryption
+* backup crypt cert
 * Audit
 * limit who can logon to container or run as non root

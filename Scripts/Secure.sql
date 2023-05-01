@@ -1,15 +1,28 @@
 USE master
 
-ALTER LOGIN SA WITH PASSWORD='Password1!'
+-- Change the SA password so that it is not cached in the container image
+ALTER LOGIN SA WITH PASSWORD='SA_Password'
+GO
+
+-- Enable encryption at rest for db content
+CREATE MASTER KEY ENCRYPTION BY PASSWORD='CRYPT_Password'
+CREATE CERTIFICATE TdeMasterCert WITH SUBJECT="TDE Key"
 GO
 
 USE TestDB
 GO
 
+CREATE DATABASE ENCRYPTION KEY WITH ALGORITHM=AES_256 ENCRYPTION BY SERVER CERTIFICATE TdeMasterCert
+GO
+
+ALTER DATABASE TestDB SET ENCRYPTION ON
+GO
+
+-- Create db users and set their level of access
 CREATE SCHEMA test
 GO
 
-CREATE LOGIN ServiceUser WITH PASSWORD='Password2!', DEFAULT_DATABASE=TestDb
+CREATE LOGIN ServiceUser WITH PASSWORD='Service_Password', DEFAULT_DATABASE=TestDb
 CREATE USER ServiceUser WITH DEFAULT_SCHEMA=test
 GRANT SELECT ON SCHEMA::test TO ServiceUser
 GRANT INSERT ON SCHEMA::test TO ServiceUser
@@ -18,17 +31,17 @@ GRANT DELETE ON SCHEMA::test TO ServiceUser
 GRANT EXECUTE ON SCHEMA::test TO ServiceUser
 GO
 
-CREATE LOGIN UpdateUser WITH PASSWORD='Password3!', DEFAULT_DATABASE = TestDb
+CREATE LOGIN UpdateUser WITH PASSWORD='Update_Password', DEFAULT_DATABASE = TestDb
 CREATE USER UpdateUser
 ALTER ROLE db_ddladmin ADD MEMBER UpdateUser
 GO
 
-CREATE LOGIN SupportRO WITH PASSWORD='Password4!'
+CREATE LOGIN SupportRO WITH PASSWORD='SRO_Password'
 CREATE USER SupportRO
 ALTER ROLE db_datareader ADD MEMBER SupportRO
 GO
 
-CREATE LOGIN SupportRW WITH PASSWORD='Password5!'
+CREATE LOGIN SupportRW WITH PASSWORD='SRW_Password'
 CREATE USER SupportRW
 ALTER ROLE db_datareader ADD MEMBER SupportRW
 ALTER ROLE db_datawriter ADD MEMBER SupportRW
